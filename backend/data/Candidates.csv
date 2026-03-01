@@ -1,0 +1,16 @@
+﻿candidate_id,full_name,party,position,county,election_year
+C01,Jane Mwangi,Reform Party,Governor,Nairobi,2022
+C02,Peter Otieno,Reform Party,MP,Nairobi,2022
+C03,Samuel Kiptoo,Reform Party,Governor,Uasin Gishu,2022
+C04,Linda Wanjiku,Unity Alliance,Governor,Kiambu,2022
+C05,David Ochieng,Unity Alliance,MP,Kisumu,2022
+C06,Mary Atieno,Unity Alliance,Governor,Mombasa,2022
+C07,James Kariuki,National Front,Governor,Nakuru,2022
+C08,Grace Naliaka,National Front,MP,Machakos,2022
+C09,Michael Mutua,National Front,Governor,Machakos,2022
+C10,Anne Chebet,Reform Party,Governor,Nairobi,2017
+C11,George Mwangi,Unity Alliance,Governor,Kiambu,2017
+C12,Ruth Akinyi,National Front,Governor,Kisumu,2017
+C13,Daniel Kibet,Reform Party,MP,Nakuru,2022
+C14,Beatrice Auma,Unity Alliance,MP,Nairobi,2022
+C15,Anthony Mutiso,National Front,MP,Mombasa,2022

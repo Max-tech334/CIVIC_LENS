@@ -1,0 +1,4 @@
+﻿parameter,default_value
+donation_cap,10000000
+corporate_allowed,true
+public_funding_ratio,0

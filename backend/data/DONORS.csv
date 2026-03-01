@@ -1,0 +1,31 @@
+﻿donor_id,name,type,industry,home_county,tier
+D01,Alpha Holdings Ltd,Corporate,Construction,Nairobi,1
+D02,John Kamau,Individual,,Kiambu,1
+D03,EastAfrica Energy PLC,Corporate,Energy,Nairobi,1
+D04,Peter Mbugua,Individual,,Nakuru,1
+D05,Metro Business Group,Business Group,Finance,Nairobi,1
+D06,Sarah Achieng,Individual,,Kisumu,2
+D07,BuildPro Ltd,Corporate,Construction,Machakos,1
+D08,GreenFields Agro,Corporate,Agriculture,Nakuru,1
+D09,National Traders Ltd,Corporate,Manufacturing,Nairobi,1
+D10,Hope Foundation,NGO,,Mombasa,2
+D11,Daniel Kiprotich,Individual,,Uasin Gishu,2
+D12,Victoria Enterprises,Business Group,Telecom,Nairobi,2
+D13,Samuel Njoroge,Individual,,Kiambu,2
+D14,Urban Developers Ltd,Corporate,Construction,Nairobi,2
+D15,Lucy Wambui,Individual,,Machakos,3
+D16,AgriCo Ltd,Corporate,Agriculture,Nakuru,2
+D17,KenFinance Corp,Corporate,Finance,Nairobi,2
+D18,Mary Naliaka,Individual,,Kisumu,3
+D19,RiverBank Group,Business Group,Finance,Nairobi,2
+D20,Patrick Mutiso,Individual,,Machakos,3
+D21,Prime Cement Ltd,Corporate,Construction,Nairobi,2
+D22,Equator Energy,Corporate,Energy,Nakuru,2
+D23,Agile Telecom Ltd,Corporate,Telecom,Nairobi,2
+D24,Harbor Logistics,Corporate,Manufacturing,Mombasa,2
+D25,Mountainside Farms,Corporate,Agriculture,Uasin Gishu,2
+D26,Nairobi Investors Club,Business Group,Finance,Nairobi,2
+D27,James Mworia,Individual,,Kiambu,3
+D28,Charity Bridge,NGO,,Kisumu,3
+D29,Sunrise Developers,Corporate,Construction,Machakos,2
+D30,Farmland Co-op,Business Group,Agriculture,Nakuru,2
