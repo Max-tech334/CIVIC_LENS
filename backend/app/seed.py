@@ -6,7 +6,7 @@ import pandas as pd
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
-# 2. Use absolute imports from the 'app' folder
+# 2. Using absolute imports from the 'app' folder
 from app.database import SessionLocal, engine
 from app import models
 
@@ -82,6 +82,6 @@ def seed_database():
         db.close()
 
 if __name__ == "__main__":
-    # Ensure tables exist just in case someone forgot to run Alembic
+    # Ensuring tables exist just in case someone forgot to run Alembic
     models.Base.metadata.create_all(bind=engine)
     seed_database()
