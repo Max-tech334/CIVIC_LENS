@@ -1,0 +1,9 @@
+# Dependencies
+frontend/node_modules/
+
+# Build outputs
+frontend/dist/
+frontend/build/
+
+# Local env files
+frontend/.env.local
