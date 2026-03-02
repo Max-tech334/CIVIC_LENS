@@ -25,9 +25,9 @@ class Candidate(Base):
     __tablename__ = "candidates"
     
     candidate_id = Column(String(50), primary_key=True, index=True)
-    full_name = Column(String(255))
+    name = Column(String(255))
     party = Column(String(100))
-    position = Column(String(100))
+    office_sought = Column(String(100))
     county = Column(String(100))
     election_year = Column(Integer)
 

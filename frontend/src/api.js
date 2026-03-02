@@ -22,3 +22,14 @@ export const fetchDonations = async () => {
     return [];
   }
 };
+
+export const fetchDonors = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/donors`);
+    if (!response.ok) throw new Error("Network response was not ok");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching donors:", error);
+    return [];
+  }
+};
