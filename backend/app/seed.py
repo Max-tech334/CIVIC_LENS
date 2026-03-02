@@ -6,7 +6,7 @@ import pandas as pd
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
-# 2. Use absolute imports from the 'app' folder
+# 2. Using absolute imports from the 'app' folder
 from app.database import SessionLocal, engine
 from app import models
 
@@ -47,9 +47,15 @@ def seed_database():
 
         # 3. Seed Candidates
         print("Loading Candidates...")
-        df_candidates = clean_df(load_csv_safely("CANDIDATES.csv"))
+        df_candidates = clean_df(load_csv_safely("Candidates.csv"))
         for _, row in df_candidates.iterrows():
-            db.merge(models.Candidate(**row.to_dict()))
+            candidate_data = row.to_dict()
+            # Map CSV column names to model field names
+            if 'full_name' in candidate_data:
+                candidate_data['name'] = candidate_data.pop('full_name')
+            if 'position' in candidate_data:
+                candidate_data['office_sought'] = candidate_data.pop('position')
+            db.merge(models.Candidate(**candidate_data))
         db.commit()
 
         # 4. Seed Donors
@@ -82,6 +88,6 @@ def seed_database():
         db.close()
 
 if __name__ == "__main__":
-    # Ensure tables exist just in case someone forgot to run Alembic
+    # Ensuring tables exist just in case someone forgot to run Alembic
     models.Base.metadata.create_all(bind=engine)
     seed_database()
