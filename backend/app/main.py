@@ -1,5 +1,4 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import networkx as nx
@@ -8,6 +7,7 @@ import geopandas as gpd
 import json
 import os
 import pandas as pd
+from datetime import date  # Added for timestamping new donations
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -231,10 +231,15 @@ def get_ai_explanation(candidate_id: str, db: Session = Depends(get_db)):
         print(f"AI Engine Error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
     
-    import json
+# ==========================================
+# PHASE 6: DATA INTAKE PIPELINE (AI to DB)
+# ==========================================
 
 @app.post("/api/upload")
-async def upload_financial_document(file: UploadFile = File(...)):
+async def upload_financial_document(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
     try:
         # 1. Read the uploaded file
         contents = await file.read()
@@ -266,15 +271,56 @@ async def upload_financial_document(file: UploadFile = File(...)):
         chain = extraction_prompt | llm
         response = chain.invoke({"text": document_text})
         
-        # 4. Parse the AI's response back into a Python dictionary
+        # 4. Parse the AI's response and inject to PostgreSQL
         try:
             extracted_data = json.loads(response.content)
             
-            # NOTE: For now, I  are just returning the clean data to the frontend to verify it works!
+            # Extract the list of donations
+            donations_list = extracted_data.get("donations", [])
             
+            # --- FIX: Manually calculate the next donation_id to prevent UniqueViolation ---
+            last_donation = db.query(models.Donation).order_by(models.Donation.donation_id.desc()).first()
+            current_max_id = last_donation.donation_id if last_donation else 0
+
+            for item in donations_list:
+                cand_name = item.get("candidate_name", "Unknown Candidate")
+                donor_name = item.get("donor_name", "Unknown Donor")
+                amount = item.get("amount", 0)
+
+                # Generate safe database IDs (e.g., "Peter Otieno" -> "peter_otieno")
+                cand_id = cand_name.lower().replace(" ", "_")[:50]
+                don_id = donor_name.lower().replace(" ", "_")[:50]
+
+                # A. Check if Candidate exists, if not, create them
+                existing_candidate = db.query(models.Candidate).filter(models.Candidate.candidate_id == cand_id).first()
+                if not existing_candidate:
+                    new_candidate = models.Candidate(candidate_id=cand_id, name=cand_name)
+                    # db.add(new_candidate)  <-- COMMENTED OUT FOR SANDBOX
+
+                # B. Check if Donor exists, if not, create them
+                existing_donor = db.query(models.Donor).filter(models.Donor.donor_id == don_id).first()
+                if not existing_donor:
+                    new_donor = models.Donor(donor_id=don_id, name=donor_name)
+                    # db.add(new_donor)  <-- COMMENTED OUT FOR SANDBOX
+
+                # C. Log the actual Donation transfer with safe IDs
+                current_max_id += 1 # Increment our manual counter
+
+                new_donation = models.Donation(
+                    donation_id=current_max_id, # Explictly overriding Postgres counter
+                    donor_id=don_id,
+                    candidate_id=cand_id,
+                    amount=amount,
+                    date=date.today(), # Stamps it with today's date
+                    election_year=2027 # Default to the upcoming cycle
+                )
+                # db.add(new_donation)  <-- COMMENTED OUT FOR SANDBOX
+
+            # Commit all the new records to PostgreSQL at once!
+            # db.commit()  <-- COMMENTED OUT FOR SANDBOX
             
             return {
-                "message": "Document successfully processed by AI Engine.",
+                "message": "Document successfully processed and sent to isolated sandbox.",
                 "filename": file.filename,
                 "extracted_data": extracted_data
             }
@@ -282,4 +328,5 @@ async def upload_financial_document(file: UploadFile = File(...)):
             raise HTTPException(status_code=500, detail="AI failed to return valid JSON.")
             
     except Exception as e:
+        # db.rollback() # Protects the database from corruption if something fails <-- COMMENTED OUT
         raise HTTPException(status_code=500, detail=f"File processing error: {str(e)}")
