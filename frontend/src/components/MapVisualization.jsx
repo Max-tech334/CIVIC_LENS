@@ -59,7 +59,7 @@ const MapVisualization = () => {
                 <div className="space-y-2">
                     <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-[#b91c1c] rounded-sm"></div> 
-                        <span>High Concentration (>15%)</span>
+                        <span>High Concentration (&gt;15%)</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-[#ef4444] rounded-sm"></div> 
